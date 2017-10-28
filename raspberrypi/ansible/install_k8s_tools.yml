@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  remote_user: pirate
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks:
+    - name: Update APT cache and install apt-transport-https
+      apt:
+        package: apt-transport-https
+        update_cache: yes
+        state: present
+
+    - name: Add APT Key
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add the APT Repository for Kubernetes
+      apt_repository:
+        repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+        filename: 'kubernetes'
+        state: present
+
+    - name: Install Kubernetes packages
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+        update_cache: yes
