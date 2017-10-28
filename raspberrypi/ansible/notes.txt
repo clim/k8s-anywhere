@@ -1,0 +1,15 @@
+Initialize Ansible:
+
+Disable host key checking
+[defaults]
+host_key_checking = false
+
+
+To check that all nodes are reacheable:
+ansible all -m ping -i hosts -k
+
+Upload ssh key to all nodes:
+ansible-playbook -i hosts upload_ssy_keys.yml -k
+
+Change hostname
+ansible-playbook -e 'reboot=true' -i hosts change_hostname.yml
