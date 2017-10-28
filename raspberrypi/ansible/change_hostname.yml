@@ -1,0 +1,22 @@
+---
+
+- hosts: all
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks:
+    - name: Change the hostname to our standard
+      lineinfile:
+        state: present
+        path: /boot/device-init.yaml
+        line: 'hostname: {{ inventory_hostname }}'
+        regexp: '^hostname: \"black-pearl\"'
+
+    - name: restart machine
+      command: shutdown -r now
+      async: 0
+      poll: 0
+      ignore_errors: true
