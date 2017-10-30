@@ -28,9 +28,9 @@
     - name: Install Kubernetes packages
       apt:
         name:
-          - kubelet
-          - kubeadm
-          - kubectl
-          - kubernetes-cni
+          - kubelet=1.8.2-00
+          - kubeadm=1.8.2-00
+          - kubectl=1.8.2-00
+          - kubernetes-cni=0.5.1
         state: present
         update_cache: yes
