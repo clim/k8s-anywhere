@@ -1,0 +1,15 @@
+---
+
+- hosts: 127.0.0.1
+  gather_facts: no
+
+  tasks:
+    - name: Safely drain the nodes of the pods
+      command: 'kubectl drain {{ item }} -—delete-local-data -—force -—ignore-daemonsets'
+      with_items: "{{ groups['worker'] }}"
+
+    - name: Delete Kubernetes worker nodes
+      command: "kubectl delete node {{ item }}"
+      with_items: "{{ groups['worker'] }}"
+
+# TODO: kubeadm reset
