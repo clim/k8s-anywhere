@@ -1,6 +1,6 @@
 ---
 
-- hosts: worker
+- hosts: all
   gather_facts: yes
   remote_user: pirate
   become: yes
