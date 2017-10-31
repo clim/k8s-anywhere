@@ -16,14 +16,35 @@ Change hostname
 ansible-playbook -e ‘reboot=true’ -i hosts change_hostname.yml
 
 
-Test conflict 1
 
-
+# Initialize the master node
+```
 kubeadm init —pod-network-cidr 10.244.0.0/16 —apiserver-advertise-address 10.91.145.132
+```
 
-Test conflict 2
+A longer route is to:
+```
+kubeadm token generate
+```
 
-kubeadm join —token 99905e.a41d71ba9f5cf96b 10.91.145.132:6443 —discovery-token-ca-cert-hash sha256:1717f9252bbff3b0a123011696e06cb273f456505a5920978bd521f9cb42b1b0
+Use the generate token for the --token parameter.
+
+To generate the CA key hash:
+```
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+
+Kubernetes document to generate certificates:
+https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=${MASTER_IP}" -days 10000 -out ca.crt
+
+Use the generated hash for the --discovery-token-ca-cert-hash parameter
+
+# Configure worker nodes to join the cluster
+```
+kubeadm join --token 249e1b.192243f317d05c96 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:1c70d1d092cb6ae1fbfada6e74c5c5d5c3ac4d12b45c60f2566b52f6a4c2f864
+```
 
 Test conflict 3
 
