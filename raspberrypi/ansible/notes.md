@@ -16,17 +16,23 @@ Change hostname
 ansible-playbook -e ‘reboot=true’ -i hosts change_hostname.yml
 
 
-
+Test conflict 1
 
 
 kubeadm init —pod-network-cidr 10.244.0.0/16 —apiserver-advertise-address 10.91.145.132
 
+Test conflict 2
+
 kubeadm join —token 99905e.a41d71ba9f5cf96b 10.91.145.132:6443 —discovery-token-ca-cert-hash sha256:1717f9252bbff3b0a123011696e06cb273f456505a5920978bd521f9cb42b1b0
+
+Test conflict 3
 
 curl https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml \
 |  sed “s/amd64/arm/g” | sed “s/vxlan/host-gw/g” \
   > kube-flannel.yaml
 kubectl apply -f kube-flannel.yaml
+
+Test conflict 4
 
 kubectl describe —namespace=kube-system configmaps/kube-flannel-cfg
 kubectl describe —namespace=kube-system daemonsets/kube-flannel-ds
