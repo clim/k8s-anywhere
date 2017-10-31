@@ -34,6 +34,11 @@ To generate the CA key hash:
 openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //'
 ```
 
+Kubernetes document to generate certificates:
+https://kubernetes.io/docs/concepts/cluster-administration/certificates/
+
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=${MASTER_IP}" -days 10000 -out ca.crt
+
 Use the generated hash for the --discovery-token-ca-cert-hash parameter
 
 # Configure worker nodes to join the cluster
