@@ -30,6 +30,7 @@ Test 4
 Test 5
 Test 6
 Test 7 working copy branch test
+Test 8 git2go branch test
 
 
 ___
