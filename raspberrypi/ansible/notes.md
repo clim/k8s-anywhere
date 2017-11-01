@@ -15,13 +15,10 @@ ansible-playbook -i hosts upload_ssy_keys.yml -k
 Change hostname
 ansible-playbook -e ‘reboot=true’ -i hosts change_hostname.yml
 
-
-
 # Initialize the master node
 ```
 kubeadm init —pod-network-cidr 10.244.0.0/16 —apiserver-advertise-address 10.91.145.132
 ```
-
 
 ## WIP
 
@@ -41,8 +38,6 @@ kubeadm messages when generating the certificates:
 [certificates] Generated front-proxy-ca certificate and key.
 [certificates] Generated front-proxy-client certificate and key.
 [certificates] Valid certificates and keys now exist in "/etc/kubernetes/pki"
-
-
 
 
 To generate the CA key hash:
@@ -142,7 +137,7 @@ kubectl apply -f hypriot-ingress.yml
 
 
 
-Tear down
+# Tear down
 
 kubectl drain k8snode02 —delete-local-data —force —ignore-daemonsets
 kubectl delete node k8snode02
