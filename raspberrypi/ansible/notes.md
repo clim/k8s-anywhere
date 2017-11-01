@@ -57,11 +57,18 @@ openssl req -x509 -new -nodes -key ca.key -subj "/CN=${MASTER_IP}" -days 10000 -
 
 Use the generated hash for the --discovery-token-ca-cert-hash parameter
 
-# Install a pod network
+# Install a pod network using Flannel
 curl https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml \
-|  sed “s/amd64/arm/g” | sed “s/vxlan/host-gw/g” \
+|  sed "s/amd64/arm/g" | sed "s/vxlan/host-gw/g" \
   > kube-flannel.yaml
 kubectl apply -f kube-flannel.yaml
+
+NOTE: I get issues with Flannel. kube-dns doesn't come up to Ready state.
+
+
+# Install a pod network using Weave Net
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
 
 # Configure worker nodes to join the cluster
 ```
