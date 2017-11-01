@@ -14,10 +14,13 @@ ansible-playbook -i hosts upload_ssy_keys.yml -k
 Change hostname
 ansible-playbook -e ‘reboot=true’ -i hosts change_hostname.yml
 
+
+
 # Initialize the master node
 ```
 kubeadm init —pod-network-cidr 10.244.0.0/16 —apiserver-advertise-address 10.91.145.132
 ```
+
 
 ## WIP
 
@@ -51,6 +54,8 @@ openssl req -x509 -new -nodes -key ca.key -subj "/CN=${MASTER_IP}" -days 10000 -
 
 Use the generated hash for the --discovery-token-ca-cert-hash parameter
 
+
+
 # Install a pod network using Flannel
 curl https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml \
 |  sed "s/amd64/arm/g" | sed "s/vxlan/host-gw/g" \
@@ -60,9 +65,13 @@ kubectl apply -f kube-flannel.yaml
 NOTE: I get issues with Flannel. kube-dns doesn't come up to Ready state.
 
 
+
 # Install a pod network using Weave Net
 export kubever=$(kubectl version | base64 | tr -d '\n')
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+
+
+
 
 # Configure worker nodes to join the cluster
 ```
@@ -76,6 +85,7 @@ kubectl —namespace=kube-system describe pod kube-dns-66ffd5c588-frf55
 kubectl get pods —all-namespaces
 
 
+
 # Deploy Kubernetes Dashboard
 curl -OL https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard-arm.yaml
 kubectl apply -f kubernetes-dashboard-arm.yaml
@@ -86,6 +96,7 @@ curl -sSL \
 
 ssh -L8001:localhost:8001 pirate@10.91.145.132
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
 
 
 # Deploy Sample Application
@@ -132,7 +143,6 @@ spec:
           servicePort: 80
 
 kubectl apply -f hypriot-ingress.yml
-
 
 
 
