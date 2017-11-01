@@ -5,7 +5,6 @@ Disable host key checking
 [defaults]
 host_key_checking = false
 
-
 To check that all nodes are reacheable:
 ansible all -m ping -i hosts -k
 
