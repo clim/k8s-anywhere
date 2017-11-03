@@ -1,32 +1,42 @@
 
-# Useful Ansible commands and configurations
+# Initialize the server for password-less access
 
-Initialize Ansible:
+## Disable Host Key Checking
+If a host is reinstalled and has a different key in ‘known_hosts’, this will result in an error message until corrected. If a host is not initially in ‘known_hosts’ this will result in prompting for confirmation of the key, which results in an interactive experience if using Ansible, from say, cron. You might not want this.
 
-Disable host key checking
-```
-[defaults]
-host_key_checking = false
-```
+This can be changed via:
+1. /etc/ansible/ansible.cfg or ~/.ansible.cfg
+    ```
+    [defaults]
+    host_key_checking = false
+    ```
+2. Environment variable
+    ```
+    $ export ANSIBLE_HOST_KEY_CHECKING=False
+    ```
 
-To check that all nodes are reacheable:
-```
-ansible all -m ping -i hosts -k
-```
+## Verify that all the nodes are reacheable
 
-Upload ssh key to all nodes:
 ```
-ansible-playbook -i hosts upload_ssy_keys.yml -k
-```
-
-Change hostname
-```
-ansible-playbook -e ‘reboot=true’ -i hosts change_hostname.yml
+ansible all -m ping -i hosts -u pirate -k
 ```
 
+## Upload ssh key to all nodes
+
+```
+ansible-playbook -i hosts upload_ssh_keys.yml -k
+```
+
+## Change the hostname
+
+```
+ansible-playbook -i hosts change_hostname.yml
+```
 
 
-# Initialize the master node
+# Setup Kubernetes
+
+## Initialize the master node
 ```
 kubeadm init —pod-network-cidr 10.244.0.0/16 —apiserver-advertise-address 10.91.145.132
 ```
@@ -70,7 +80,8 @@ Use the generated hash for the --discovery-token-ca-cert-hash parameter
 
 
 
-# Install a pod network using Flannel
+## Install a pod network using Flannel
+
 ```
 curl https://rawgit.com/coreos/flannel/master/Documentation/kube-flannel.yml \
 |  sed "s/amd64/arm/g" | sed "s/vxlan/host-gw/g" \
@@ -82,17 +93,21 @@ NOTE: I get issues with Flannel. kube-dns doesn't come up to Ready state.
 
 
 
-# Install a pod network using Weave Net
+## Install a pod network using Weave Net
+
 ```
 export kubever=$(kubectl version | base64 | tr -d '\n')
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=1.8.2"
 ```
 
-# Configure worker nodes to join the cluster
+
+## Configure worker nodes to join the cluster
+
 ```
 kubeadm join --token 249e1b.192243f317d05c96 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:1c70d1d092cb6ae1fbfada6e74c5c5d5c3ac4d12b45c60f2566b52f6a4c2f864
 kubeadm join --token dad4b4.cca2839e3f530073 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:3762a539bd25a0e668b201e8e63cfcb429449ddd0bfea2d67400a4c8cc0128f3
+kubeadm join --token 9e11f2.ef4637279517b0a5 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:233cd600fe73fb66a56adea91d7afa6e4215a3075acc4092875d61a3ae1ae3d6
 ```
 
 ```
@@ -104,7 +119,7 @@ kubectl get pods —all-namespaces
 ```
 
 
-# Deploy Kubernetes Dashboard
+## Deploy Kubernetes Dashboard
 ```
 curl -OL https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard-arm.yaml
 kubectl apply -f kubernetes-dashboard-arm.yaml
@@ -118,7 +133,7 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 ```
 
 
-# Deploy Sample Application
+# Deploy a Kubernetes Sample Application
 
 Create a namespace
 ```
@@ -178,7 +193,8 @@ kubectl apply -f hypriot-ingress.yml
 ```
 
 
-# Tear down
+# Tear down Kubernetes cluster
+
 ```
 kubectl drain k8snode02 —delete-local-data —force —ignore-daemonsets
 kubectl delete node k8snode02
