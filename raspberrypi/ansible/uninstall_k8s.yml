@@ -14,13 +14,21 @@
           - kubelet=1.8.2-00
           - kubeadm=1.8.2-00
           - kubectl=1.8.2-00
-          - kubernetes-cni
         state: absent
 
     - name: Remove Kubernetes configuration
       file:
-        path: /etc/kubernetes
+        path: "{{ item }}"
         state: absent
+      with_items:
+        - "/etc/kubernetes"
+        - "/etc/cni"
+        - "/var/lib/kubelet"
+        - "/var/lib/weave"
+        - "/var/lib/cni"
+        - "/var/lib/etcd"
+        - "/var/lib/dockershim"
+        - "/opt/cni"
 
     - name: Remove Kubernetes APT Repository
       apt_repository:

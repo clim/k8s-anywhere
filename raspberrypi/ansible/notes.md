@@ -86,13 +86,13 @@ NOTE: I get issues with Flannel. kube-dns doesn't come up to Ready state.
 ```
 export kubever=$(kubectl version | base64 | tr -d '\n')
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=1.8.2"
 ```
-
-
 
 # Configure worker nodes to join the cluster
 ```
 kubeadm join --token 249e1b.192243f317d05c96 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:1c70d1d092cb6ae1fbfada6e74c5c5d5c3ac4d12b45c60f2566b52f6a4c2f864
+kubeadm join --token dad4b4.cca2839e3f530073 10.91.145.132:6443 --discovery-token-ca-cert-hash sha256:3762a539bd25a0e668b201e8e63cfcb429449ddd0bfea2d67400a4c8cc0128f3
 ```
 
 ```

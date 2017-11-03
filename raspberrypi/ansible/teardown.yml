@@ -5,7 +5,7 @@
 
   tasks:
     - name: Safely drain the nodes of the pods
-      command: 'kubectl drain {{ item }} -—delete-local-data -—force -—ignore-daemonsets'
+      command: "kubectl drain {{ item }} --delete-local-data --force --ignore-daemonsets"
       with_items: "{{ groups['worker'] }}"
 
     - name: Delete Kubernetes worker nodes
