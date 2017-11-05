@@ -132,6 +132,14 @@ ssh -L8001:localhost:8001 pirate@10.91.145.132
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
+### Additional Info
+To download the current deployment:
+
+```
+$ kubectl get deployments nginx —export -o yaml > nginx-deployment.yaml
+$ kubectl replace -f nginx-deployment.yaml —save-config
+```
+
 
 # Deploy a Kubernetes Sample Application
 
