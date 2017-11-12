@@ -119,19 +119,6 @@ kubectl get pods —all-namespaces
 ```
 
 
-## Deploy Kubernetes Dashboard
-```
-curl -OL https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard-arm.yaml
-kubectl apply -f kubernetes-dashboard-arm.yaml
-
-curl -sSL \
-  https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard-arm.yaml \
-  | kubectl apply -f -
-
-ssh -L8001:localhost:8001 pirate@10.91.145.132
-http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
-```
-
 ### Additional Info
 To download the current deployment:
 
@@ -142,6 +129,11 @@ $ kubectl replace -f nginx-deployment.yaml —save-config
 
 
 # Deploy a Kubernetes Sample Application
+
+## Sock Shop Application
+
+**NOTE: Sock shop example is compatible only for x86 machines.
+Keeping it here for reference purposes.**
 
 Create a namespace
 ```
@@ -168,11 +160,11 @@ To uninstall the sample application:
 kubectl delete namespace sock-shop
 ```
 
+## HTTP Application
 
-Sample 2:
 ```
-kubectl run hypriot —image=hypriot/rpi-busybox-httpd —replicas=3 —port=80
-kubectl expose deployment hypriot —port 80
+kubectl run hypriot --image=hypriot/rpi-busybox-httpd --replicas=3 --port=80
+kubectl expose deployment hypriot --port 80
 kubectl get endpoints hypriot
 ```
 
@@ -200,10 +192,21 @@ spec:
 kubectl apply -f hypriot-ingress.yml
 ```
 
+### To delete the deployment
+
+```
+kubectl delete deployment hypriot
+```
+
+**NOTE: Pods and ReplicaSets can't be directly deleted.**
+
+
+
 
 # Tear down Kubernetes cluster
 
 ```
 kubectl drain k8snode02 —delete-local-data —force —ignore-daemonsets
 kubectl delete node k8snode02
+etcdctl del "" --prefix
 ```
