@@ -1,0 +1,33 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  config.vm.box_check_update = false
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "1024"
+    vb.cpus = "2"
+  end
+
+  config.vm.define "k8snode01" do |k8snode01|
+    k8snode01.vm.hostname = "k8snode01"
+    k8snode01.vm.network "private_network", ip: "192.168.1.110"
+    k8snode01.vm.provider "virtualbox" do |vb|
+      vb.name = "k8snode01"
+    end
+  end
+
+  config.vm.define "k8snode02" do |k8snode02|
+    k8snode02.vm.hostname = "k8snode02"
+    k8snode02.vm.network "private_network", ip: "192.168.1.111"
+    k8snode02.vm.provider "virtualbox" do |vb|
+      vb.name = "k8snode02"
+    end
+  end
+
+  config.vm.define "k8snode03" do |k8snode03|
+    k8snode03.vm.hostname = "k8snode03"
+    k8snode03.vm.network "private_network", ip: "192.168.1.112"
+    k8snode03.vm.provider "virtualbox" do |vb|
+      vb.name = "k8snode03"
+    end
+  end
+end
