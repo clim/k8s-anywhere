@@ -1,0 +1,43 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  remote_user: vagrant
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks:
+    - name: Update APT cache and install packages to allow apt over HTTPS
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg2
+          - software-properties-common
+        update_cache: yes
+        state: present
+
+    - name: Add Docker APT Key
+      apt_key:
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: Add the APT Repository for Docker
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
+        filename: 'jessie'
+        update_cache: yes
+        state: present
+
+    - name: Install Docker packages
+      apt:
+        package: docker-ce=17.03.1~ce-0~debian-jessie
+        state: present
+
+    - name: Add vagrant user to docker group
+      user:
+        name: vagrant
+        group: docker
+        state: present
