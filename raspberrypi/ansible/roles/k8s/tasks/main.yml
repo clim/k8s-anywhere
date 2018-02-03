@@ -1,0 +1,26 @@
+---
+- name: Update APT cache and install apt-transport-https
+  apt:
+    package: apt-transport-https
+    update_cache: yes
+    state: present
+
+- name: Add Kubernetes APT Key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Add the APT Repository for Kubernetes
+  apt_repository:
+    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+    filename: 'kubernetes'
+    update_cache: yes
+    state: present
+
+- name: Install Kubernetes packages
+  apt:
+    name:
+      - kubelet=1.9.2-00
+      - kubeadm=1.9.2-00
+      - kubectl=1.9.2-00
+    state: present

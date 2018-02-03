@@ -19,9 +19,19 @@ Default login:
 * Password: hypriot
 
 ```
-$ ansible-playbook -i hosts upload_ssh_keys.yml -k
+$ ansible-playbook -i inventory.yml adhoc/upload_ssh_keys.yml -k
 ```
 
-### asdfsdf
+### OS related configurations (e.g. hostname, swap)
 
+```
+$ ansible-playbook -i inventory.yml os.yml
+```
 
+***NOTE***: The servers will reboot after executing the playbook.
+
+### Install Kubernetes packages
+
+```
+$ ansible-playbook -i inventory.yml k8s.yml
+```
