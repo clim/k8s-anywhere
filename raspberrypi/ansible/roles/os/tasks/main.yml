@@ -1,0 +1,18 @@
+---
+- name: Change the hostname to our standard
+  lineinfile:
+    state: present
+    path: /boot/device-init.yaml
+    line: 'hostname: {{ inventory_hostname }}'
+    regexp: '^hostname: \"black-pearl\"'
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reboot Servers
+
+- name: Tell Linux you never want NiFi to swap
+  sysctl:
+    name: "vm.swappiness"
+    value: "0"
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl daemon

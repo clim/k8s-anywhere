@@ -1,0 +1,10 @@
+---
+- name: Reload systemctl daemon
+  command: systemctl daemon-reload
+  when: ansible_service_mgr == 'systemd'
+
+- name: Reboot Servers
+  shell: sleep 2 && shutdown -r now "Rebooting servers"
+  async: 1
+  poll: 0
+  ignore_errors: true
