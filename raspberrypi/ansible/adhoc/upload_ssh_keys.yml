@@ -1,0 +1,12 @@
+---
+
+- hosts: all
+  gather_facts: true
+  remote_user: pirate
+
+  tasks:
+    - name: Setup authorized key
+      authorized_key:
+        user: pirate
+        exclusive: no
+        key: "{{ lookup('file', '../ssh_keys/id_rsa.pub') }}"

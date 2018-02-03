@@ -5,7 +5,10 @@
 
 ### TODO:
 1. Fine tune ansible scripts for v1.9.2
-2. K8s dashboard via Ingress
+2. K8s dashboard
+3. Exercises on exposing the dashboard via NodePort and/or Ingress
+4. Setup Heapster to display graphs on the dashboard
+
 
 ## Kubernetes 1.8.2
 
