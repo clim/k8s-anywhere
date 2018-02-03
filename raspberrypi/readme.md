@@ -1,5 +1,12 @@
 # Version History
 
+### Kubernetes v1.9.2
+### DONE:
+
+### TODO:
+1. Fine tune ansible scripts for v1.9.2
+2. K8s dashboard via Ingress
+
 ## Kubernetes 1.8.2
 
 ### Done:
