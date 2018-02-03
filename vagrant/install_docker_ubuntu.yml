@@ -14,29 +14,28 @@
           - apt-transport-https
           - ca-certificates
           - curl
-          - gnupg2
           - software-properties-common
         update_cache: yes
         state: present
 
     - name: Add Docker APT Key
       apt_key:
-        url: https://download.docker.com/linux/debian/gpg
+        url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add the APT Repository for Docker
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
-        filename: 'jessie'
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+        filename: 'xenial'
         update_cache: yes
         state: present
 
     - name: Install Docker packages
       apt:
-        package: docker-ce=17.03.1~ce-0~debian-jessie
+        package: docker-ce=17.03.2~ce-0~ubuntu-xenial
         state: present
 
-    - name: Add vagrant user to docker group
+    - name: Add Kubernetes user to docker group
       user:
         name: vagrant
         group: docker
