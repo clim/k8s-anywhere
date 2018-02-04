@@ -2,14 +2,13 @@
 
 - hosts: all
   gather_facts: no
-  remote_user: pirate
   become: yes
   become_user: root
   become_method: sudo
 
   tasks:
-    - name: Shutdown servers
-      command: shutdown -h now
-
-    - name: wait go down
-      local_action: wait_for host={{ ansible_ssh_host }} port=22 delay=1 timeout=300 connect_timeout=15
+    - name: Reboot Servers
+      shell: sleep 2 && shutdown -h now "Shutdown servers"
+      async: 1
+      poll: 0
+      ignore_errors: true
