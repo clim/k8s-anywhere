@@ -16,3 +16,11 @@
   when: ansible_service_mgr == 'systemd'
   notify:
     - Reload systemctl daemon
+
+- name: Pass bridged IPv4 traffic to iptables’ chains
+  sysctl:
+    name: "net.bridge.bridge-nf-call-iptables"
+    value: "1"
+  when: ansible_service_mgr == 'systemd'
+  notify:
+    - Reload systemctl daemon
